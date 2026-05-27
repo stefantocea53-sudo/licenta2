@@ -704,6 +704,26 @@
 
 
 
+
+    .download-logs-btn {
+      width: max-content;
+      min-height: 38px;
+      margin-top: 12px;
+      padding: 0 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(106,255,170,.24);
+      background: linear-gradient(135deg, rgba(106,255,170,.18), rgba(106,255,170,.055));
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .download-logs-btn:hover {
+      filter: brightness(1.08);
+      border-color: rgba(106,255,170,.42);
+    }
+
     .command-grid {
       display: grid;
       grid-template-columns: repeat(2,minmax(0,1fr));
@@ -1140,6 +1160,12 @@
                 <tr><td>Total mesaje</td><td id="totalMessagesTable">0</td></tr>
                 <tr><td>Ultimul update</td><td id="lastUpdateTable">--</td></tr>
               </table>
+
+              <div class="command-line" style="margin-top:14px">
+                <div><b>Loguri microSD:</b> <span id="logsStatus">Aștept cerere</span></div>
+                <div><b>Sursă:</b> Arduino Mega / LOG.TXT</div>
+                <button class="download-logs-btn" onclick="requestLogsDownload()">Descarcă logurile</button>
+              </div>
             </div>
           </section>
         </section>
@@ -1154,6 +1180,7 @@
                 <tr><td>WebSocket</td><td>wss://broker.emqx.io:8084/mqtt</td></tr>
                 <tr><td>Topic status</td><td>licenta/stefan/secureaccess/status</td></tr>
                 <tr><td>Topic comenzi</td><td>licenta/stefan/secureaccess/comanda</td></tr>
+                <tr><td>Topic loguri</td><td>licenta/stefan/secureaccess/loguri</td></tr>
                 <tr><td>MQTT</td><td id="mqttTable">--</td></tr>
                 <tr><td>ESP32</td><td id="espTable">--</td></tr>
                 <tr><td>Uptime Arduino</td><td id="uptime2">--</td></tr>
@@ -1180,10 +1207,11 @@
               <h3>Control de la distanță</h3>
               <div class="command-line">
                 <div><b>Control MQTT:</b> <span class="command-code" id="remoteControlStatus">Activ</span></div>
-                <div><b>Comenzi acceptate:</b> <span class="command-code">SECURITY_HIGH / SECURITY_NORMAL</span></div>
+                <div><b>Comenzi acceptate:</b> <span class="command-code">SECURITY_HIGH / SECURITY_NORMAL / GET_LOGS</span></div>
                 <div><b>Traseu:</b> Dashboard Web → MQTT → ESP32 → Arduino</div>
               </div>
             </div>
+
           </section>
         </section>
       </div>
@@ -1212,6 +1240,7 @@
     let lastCommandTime = "--";
 
     const MQTT_CONTROL_TOPIC = "licenta/stefan/secureaccess/comanda";
+    const MQTT_LOGS_TOPIC = "licenta/stefan/secureaccess/loguri";
 
     let stats = {
       totalPermise: 0,
@@ -1596,6 +1625,53 @@
       if (raw) raw.textContent = JSON.stringify(d, null, 2);
     }
 
+
+    function requestLogsDownload() {
+      if (!client || !client.connected) {
+        setText("logsStatus", "MQTT neconectat");
+        return;
+      }
+
+      setText("logsStatus", "Cer logurile de la Arduino...");
+      updateCommandInfo("GET_LOGS");
+
+      const payload = {
+        comanda: "getLogs",
+        source: "Dashboard Web",
+        timestamp: new Date().toISOString()
+      };
+
+      client.publish(MQTT_CONTROL_TOPIC, JSON.stringify(payload), { qos: 0, retain: false });
+    }
+
+    function downloadTextFile(filename, content) {
+      const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      URL.revokeObjectURL(url);
+    }
+
+    function handleLogsMessage(payloadText) {
+      try {
+        const data = JSON.parse(payloadText);
+        const content = data.content || "Nu exista loguri disponibile.";
+        const time = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
+
+        setText("logsStatus", "Loguri primite. Descărcare pornită.");
+        downloadTextFile("secureaccess_loguri_" + time + ".txt", content);
+      } catch (e) {
+        setText("logsStatus", "Eroare la citirea logurilor");
+        console.error("Loguri JSON invalid:", payloadText);
+      }
+    }
+
     function connectMQTT() {
       updateMqttVisual("warn", "Conectare...");
 
@@ -1613,16 +1689,27 @@
 
         client.subscribe(MQTT_TOPIC, { qos: 0 }, (err) => {
           if (err) {
-            updateMqttVisual("bad", "Eroare subscribe");
-            console.error("Eroare subscribe MQTT:", err);
+            updateMqttVisual("bad", "Eroare subscribe status");
+            console.error("Eroare subscribe MQTT status:", err);
+          }
+        });
+
+        client.subscribe(MQTT_LOGS_TOPIC, { qos: 0 }, (err) => {
+          if (err) {
+            console.error("Eroare subscribe MQTT loguri:", err);
           }
         });
       });
 
       client.on("message", (topic, message) => {
-        if (topic !== MQTT_TOPIC) return;
-
         const text = message.toString();
+
+        if (topic === MQTT_LOGS_TOPIC) {
+          handleLogsMessage(text);
+          return;
+        }
+
+        if (topic !== MQTT_TOPIC) return;
 
         try {
           const data = JSON.parse(text);
