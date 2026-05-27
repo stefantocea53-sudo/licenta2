@@ -998,7 +998,7 @@
               <div class="eyebrow"><span class="live-dot"></span>Date live</div>
               <h1 id="pageTitle">Panou principal</h1>
               <div class="head-sub" id="pageSubtitle">
-                Monitorizare compactă pentru ușă, RFID, senzori PIR și alarmă.
+                
               </div>
             </div>
           </div>
@@ -1011,7 +1011,7 @@
             <div>
               <h3>Timer ușă</h3>
               <strong id="doorTimerTitle">Inactiv</strong>
-              <p id="doorTimerText">Se activează 5 secunde după acces permis.</p>
+              <p id="doorTimerText"></p>
             </div>
           </div>
         </section>
@@ -1022,25 +1022,25 @@
             <div class="card metric">
               <div class="metric-top"><h3>Ușă / Servo</h3><div class="icon-bubble">▰</div></div>
               <div class="big-text" id="usaBox">--</div>
-              <div class="card-note">Stare ușă controlată de SG90.</div>
+              
             </div>
 
             <div class="card metric">
               <div class="metric-top"><h3>RFID</h3><div class="icon-bubble">◉</div></div>
               <div class="big-text" id="accesBox">--</div>
-              <div class="card-note">UID: <span id="rfid">--</span></div>
+              <span id="rfid" style="display:none">--</span>
             </div>
 
             <div class="card metric">
               <div class="metric-top"><h3>PIR</h3><div class="icon-bubble">◎</div></div>
               <div class="big-text" id="pirBox">--</div>
-              <div class="card-note">Exterior + hol interior.</div>
+              
             </div>
 
             <div class="card metric">
               <div class="metric-top"><h3>Alarmă</h3><div class="icon-bubble">!</div></div>
               <div class="big-text" id="alarmaBox">--</div>
-              <div class="card-note">Blocare: <span id="blockedDash">--</span></div>
+              
             </div>
           </section>
 
@@ -1049,7 +1049,7 @@
               <h3>Mod securitate</h3>
               <div class="security-control-title" id="securityModeTitle">Sistem în mod normal</div>
               <div class="security-control-text" id="securityModeText">
-                Alarma nu pornește la mișcare interioară. Apasă pentru modul de securitate ridicat.
+                
               </div>
               <div class="pill security-mode-pill" id="securityModePill">Stare: Normală</div>
             </div>
@@ -1063,19 +1063,19 @@
             <div class="section-title">Diagramă acces</div>
             <div class="diagram">
               <div class="zone" id="zoneExteriorDash">
-                <div><div class="zone-icon">🚶</div><b>Exterior</b><span>PIR 1</span></div>
+                <div><div class="zone-icon">🚶</div><b>Exterior</b></div>
               </div>
 
               <div class="arrow">→</div>
 
               <div class="zone" id="zoneUsaDash">
-                <div><div class="zone-icon">🚪</div><b>Ușă</b><span>RFID + Servo</span></div>
+                <div><div class="zone-icon">🚪</div><b>Ușă</b></div>
               </div>
 
               <div class="arrow">→</div>
 
               <div class="zone" id="zoneInteriorDash">
-                <div><div class="zone-icon">🏢</div><b>Hol</b><span>PIR 2</span></div>
+                <div><div class="zone-icon">🏢</div><b>Hol</b></div>
               </div>
             </div>
           </section>
@@ -1084,9 +1084,9 @@
         <!-- ACCES -->
         <section id="page-acces" class="page hidden">
           <section class="three-col">
-            <div class="card"><h3>Ultimul UID</h3><div class="big-text" id="rfidPage">--</div><div class="card-note">Card / tag RFID citit.</div></div>
-            <div class="card"><h3>Status acces</h3><div class="big-text" id="accesPage">--</div><div class="card-note">Autorizare curentă.</div></div>
-            <div class="card"><h3>Stare ușă</h3><div class="big-text" id="usaPage">--</div><div class="card-note">Servo 0° / 90°.</div></div>
+            <div class="card"><h3>Ultimul UID</h3><div class="big-text" id="rfidPage">--</div></div>
+            <div class="card"><h3>Status acces</h3><div class="big-text" id="accesPage">--</div></div>
+            <div class="card"><h3>Stare ușă</h3><div class="big-text" id="usaPage">--</div></div>
           </section>
 
           <section class="three-col">
@@ -1099,8 +1099,8 @@
         <!-- SENZORI -->
         <section id="page-senzori" class="page hidden">
           <section class="four-col">
-            <div class="card"><h3>PIR exterior</h3><div class="big-text" id="pir1">--</div><div class="card-note">Senzor montat în exterior.</div></div>
-            <div class="card"><h3>PIR interior</h3><div class="big-text" id="pir2">--</div><div class="card-note">Senzor montat în hol.</div></div>
+            <div class="card"><h3>PIR exterior</h3><div class="big-text" id="pir1">--</div></div>
+            <div class="card"><h3>PIR interior</h3><div class="big-text" id="pir2">--</div></div>
             <div class="card"><h3>Mișcări exterior</h3><div class="big-value warn" id="totalMiscariExterior">0</div></div>
             <div class="card"><h3>Mișcări interior</h3><div class="big-value warn" id="totalMiscariInterior">0</div></div>
           </section>
@@ -1109,7 +1109,7 @@
             <div class="section-title">Zone monitorizate</div>
             <div class="diagram">
               <div class="zone" id="zoneExteriorPir">
-                <div><div class="zone-icon">🚶</div><b>Exterior</b><span>PIR 1</span></div>
+                <div><div class="zone-icon">🚶</div><b>Exterior</b></div>
               </div>
 
               <div class="arrow">→</div>
@@ -1121,7 +1121,7 @@
               <div class="arrow">→</div>
 
               <div class="zone" id="zoneInteriorPir">
-                <div><div class="zone-icon">🏢</div><b>Hol</b><span>PIR 2</span></div>
+                <div><div class="zone-icon">🏢</div><b>Hol</b></div>
               </div>
             </div>
           </section>
@@ -1131,8 +1131,8 @@
         <section id="page-securitate" class="page hidden">
           <section class="three-col">
             <div class="card"><h3>Nivel securitate</h3><div class="big-value security-level" id="nivel">--</div></div>
-            <div class="card"><h3>Alarmă</h3><div class="big-text" id="alarmaPage">--</div><div class="card-note">Buzzer + LED alarmă.</div></div>
-            <div class="card"><h3>Blocare temporară</h3><div class="big-text" id="blocat">--</div><div class="card-note">După accesări greșite.</div></div>
+            <div class="card"><h3>Alarmă</h3><div class="big-text" id="alarmaPage">--</div></div>
+            <div class="card"><h3>Blocare temporară</h3><div class="big-text" id="blocat">--</div></div>
           </section>
 
           <section class="three-col">
@@ -1275,12 +1275,12 @@
       if (link) link.classList.add("active");
 
       const titles = {
-        dashboard: ["Panou principal", "Monitorizare compactă pentru ușă, RFID, senzori PIR și alarmă."],
-        acces: ["Acces RFID", "Ultimul UID, status acces și statistici RFID."],
-        senzori: ["PIR și zone", "Mișcare exterior / interior și contorizare separată."],
-        securitate: ["Securitate", "Nivel risc, alarmă, blocare și evenimente critice."],
-        istoric: ["Istoric", "Evenimente live primite de la ESP32."],
-        sistem: ["Sistem", "Conexiuni MQTT, topic și ultimul pachet JSON."]
+        dashboard: ["Panou principal", ""],
+        acces: ["Acces RFID", ""],
+        senzori: ["PIR și zone", ""],
+        securitate: ["Securitate", ""],
+        istoric: ["Istoric", ""],
+        sistem: ["Sistem", ""]
       };
 
       document.getElementById("pageTitle").textContent = titles[page][0];
@@ -1347,10 +1347,10 @@
 
       if (doorTimer > 0) {
         setText("doorTimerTitle", doorTimer + " secunde");
-        setText("doorTimerText", "Acces permis. Ușa rămâne validă temporar.");
+        setText("doorTimerText", "");
       } else {
         setText("doorTimerTitle", "Inactiv");
-        setText("doorTimerText", "Se activează 5 secunde după acces permis.");
+        setText("doorTimerText", "");
       }
     }
 
@@ -1420,14 +1420,14 @@
         btn.textContent = "Dezactivează modul ridicat";
         btn.classList.add("armed");
         title.textContent = "Sistem în securitate ridicată";
-        text.textContent = "Alarma pornește doar dacă este detectată mișcare în interiorul clădirii.";
+        text.textContent = "";
         pill.textContent = siteAlarmActive ? "Stare: Critică" : "Stare: Ridicată";
         pill.className = siteAlarmActive ? "pill bad security-mode-pill" : "pill warn security-mode-pill";
       } else {
         btn.textContent = "Activează securitate ridicată";
         btn.classList.remove("armed");
         title.textContent = "Sistem în mod normal";
-        text.textContent = "Alarma nu pornește la mișcare interioară. Apasă pentru modul de securitate ridicat.";
+        text.textContent = "";
         pill.textContent = "Stare: Normală";
         pill.className = "pill ok security-mode-pill";
       }
